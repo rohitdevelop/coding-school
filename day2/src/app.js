@@ -1,0 +1,11 @@
+const express = require("express")
+const app = express()
+const userRouter = require("./router/user.router")
+const cookieParser = require("cookie-parser");
+
+app.use(express.json())
+app.use(cookieParser())
+app.use('/api',userRouter)
+ 
+
+module.exports = app
