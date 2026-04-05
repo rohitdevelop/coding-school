@@ -1,0 +1,9 @@
+Why Reconciliation is Fast 🚀
+👉 React reconciliation compares the previous and new virtual DOM using a diffing algorithm and updates only the changed parts in the real DOM for better performance.
+
+Uses Virtual DOM
+Uses Diffing Algorithm (O(n))
+Updates only what is needed
+
+=================================================================================================================
+👉 Controlled components use React state to manage form data, while uncontrolled components rely on the DOM using refs to handle form values.
