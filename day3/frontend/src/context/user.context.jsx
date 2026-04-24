@@ -1,34 +1,29 @@
 import { createContext, useState } from "react";
-import { register, login } from "../api/user.api";
+import { login } from "../api/user.api";
+import { useNavigate } from "react-router-dom";
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(false); // ✅ fixed
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
-  // 🔐 Register
+  // login fun
   const userregister = async (data) => {
     setLoading(true);
     try {
-      const res = await register(data); // ✅ pass data
-      setUser(res.data.user); // ✅ correct access
-      alert(res.data.message);
-    } catch (error) {
-      console.log(error);
-      alert(error.response?.data?.message);
-    } finally {
-      setLoading(false);
-    }
-  };
+      const res = await login(data);
 
-  // 🔐 Login
-  const userlogin = async (data) => {
-    setLoading(true);
-    try {
-      const res = await login(data); // ✅ pass data
-      setUser(res.data.user); // ✅ correct access
-      alert("Login successful");
+      const loggedInUser = res.data.user;
+
+      setUser(loggedInUser);
+      console.log(loggedInUser);
+      alert(res.data.message);
+
+      if (loggedInUser.role === "Member") {
+        return navigate("/event");
+      }
     } catch (error) {
       console.log(error);
       alert(error.response?.data?.message);
@@ -38,9 +33,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider
-      value={{ user, setUser, userregister, userlogin, loading }}
-    >
+    <AuthContext.Provider value={{ user, setUser, userregister, loading }}>
       {children}
     </AuthContext.Provider>
   );
